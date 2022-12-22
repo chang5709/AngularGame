@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game</title>
+</head>
+
+<body>
+  <h2>Player1</h2>
+  <div class="button_wrap">
+    <a class="button" (click)="Play1(PlayerType.scissors)">剪刀</a>
+    <a class="button" (click)="Play1(PlayerType.rock)">石頭</a>
+    <a class="button" (click)="Play1(PlayerType.paper)">布</a>
+  </div>
+  <h2>Player2</h2>
+  <div class="button_wrap">
+    <a class="button" (click)="Play2(PlayerType.scissors)">剪刀</a>
+    <a class="button" (click)="Play2(PlayerType.rock)">石頭</a>
+    <a class="button" (click)="Play2(PlayerType.paper)">布</a>
+  </div>
+  <div>
+    <div class="message_wrap">
+      <h2 class="message" [class]="{
+                win: playerResult.gameResult === GameResult.Player,
+                lose: playerResult.gameResult === GameResult.Bot,
+                draw: playerResult.gameResult === GameResult.Draw}">
+        {{ playerResult.resultString }}
+      </h2>
+    </div>
+    <div class="message_wrap">
+      <h2 class="message" [class]="{
+                win: playerResult2.gameResult === GameResult.Player,
+                lose: playerResult2.gameResult === GameResult.Bot,
+                draw: playerResult2.gameResult === GameResult.Draw}">
+        {{ playerResult2.resultString }}
+      </h2>
+    </div>
+  </div>
+  <div>
+    <div class="bot_wrap">
+      <div class="bot">{{ lastBotPlayerType }}</div>
+      <div class="bot">{{ lastBotPlayerType2 }}</div>
+    </div>
+    <button class="reset" (click)="Reset()">重置</button>
+  </div>
+  <h3>Player1</h3>
+  <div class="log_wrap">
+    <div class="log">勝:{{ playerWinCount }}</div>
+    <div class="log">平手:{{ drawCount }}</div>
+    <div class="log">敗:{{ playerLoseCount }}</div>
+  </div>
+  <h3>Player2</h3>
+  <div class="log_wrap">
+    <div class="log">勝:{{ playerWinCount2 }}</div>
+    <div class="log">平手:{{ drawCount2 }}</div>
+    <div class="log">敗:{{ playerLoseCount2 }}</div>
+  </div>
+
+  <div class="message_wrap">
+    <table>
+      <th class="message">對戰紀錄:</th>
+      <tr class="message" *ngFor="let item of resultHistory; let i=index" >
+        <td class="message">
+          {{ "Bot1出" + playerTypeString.get(item.botsTypes[0]) }}
+          {{ "Bot2出" + playerTypeString.get(item.botsTypes[1]) }}
+          {{ "P1出" + playerTypeString.get(item.playerTypes[0]) }}
+          {{ "P2出" + playerTypeString.get(item.playerTypes[1]) }}
+          <b>
+            <label *ngIf="item.winner.length == 0; else notDraw">
+              和局
+            </label>
+            <ng-template #notDraw>
+              勝者為:
+              <label *ngFor="let item2 of item.winner">
+                {{ item2.name }}
+              </label>
+            </ng-template>
+          </b>
+          <button class="delete" (click)="Delete(i)">X</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
